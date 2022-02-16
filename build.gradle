@@ -1,5 +1,29 @@
 plugins {
   id "org.ysb33r.doxygen" version "0.7.0"
+  id "de.undercouch.download" version "5.0.1"
 }
 
 version "4.1"
+
+task downloadArchive(type: Download) {
+    src "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n${version}.zip"
+    dest "${buildDir}/FFmpeg.zip"
+    overwrite false
+}
+
+task unzipArchive(type: Copy, dependsOn: downloadArchive) {
+    fileTree(downloadArchive.dest).each {
+        from(zipTree(it))
+    }
+    
+    into "${buildDir}/FFmpeg.zip_extracted"
+}
+
+doxygen.dependsOn unzipArchive
+
+doxygen {
+    generate_html true
+    
+    source "${buildDir}/FFmpeg.zip_extracted/FFmpeg-n${version}"
+	template "${buildDir}/FFmpeg.zip_extracted/FFmpeg-n${version}/doc/Doxyfile"
+}

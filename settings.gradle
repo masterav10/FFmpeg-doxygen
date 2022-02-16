@@ -7,4 +7,7 @@
  * in the user guide at https://docs.gradle.org/4.8.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'FFmpeg-doxygen'
+rootProject.name = 'immersed-presets'
+include 'immersed-presets-cub'
+include 'immersed-presets-decklink'
+include 'immersed-presets-template-generator'
